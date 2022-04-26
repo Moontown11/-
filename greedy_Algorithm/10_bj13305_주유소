@@ -1,0 +1,43 @@
+package bj13305;
+
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+	public static void main(String args[]) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		
+		int n = Integer.parseInt(br.readLine());
+		
+		long[] city = new long[n];
+		long[] road = new long[n-1];
+		
+		st = new StringTokenizer(br.readLine(), " ");
+		for(int i = 0;i<n-1;i++) 
+			road[i] = Integer.parseInt(st.nextToken());
+		
+		st = new StringTokenizer(br.readLine(), " ");
+		for(int i = 0;i<n;i++) 
+			city[i] = Integer.parseInt(st.nextToken());	
+		
+		
+		long min = city[0] * road[0]; //무조건 첫 도로는 첫 주유소에서 충전
+		road[0] = 0;
+		
+		for(int i = 0; i<n-1; i++) {
+			int j = i;
+			if(road[j] != 0) {
+				min += city[i] * road[j];
+				}
+			while(city[i] < city[++j] && j<n-1) {
+				min += city[i] * road[j];
+				road[j] = 0;
+			}
+		}
+		System.out.println(min);
+		
+	}
+}
