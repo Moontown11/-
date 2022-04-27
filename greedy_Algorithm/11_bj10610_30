@@ -1,0 +1,40 @@
+package bj10610;
+
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
+
+
+public class Main {
+	public static void main(String args[]) throws IOException {
+		//30의 배수는 모든 자리의 숫자의 합이 3의 배수이며 마지막 자리가 0이되어야함
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String input = br.readLine();
+		
+		String[] temp = input.split("");
+		Integer[] num_arr = new Integer[temp.length];
+		
+		boolean zerocheck = false;
+		int sum = 0;
+		for(int i = 0; i<temp.length; i++) {
+			num_arr[i] = Integer.parseInt(temp[i]);
+			sum += num_arr[i];
+			if(num_arr[i] == 0)
+				zerocheck = true;
+		}
+		
+		if(sum % 3 == 0 && zerocheck) {
+			Arrays.sort(num_arr, Collections.reverseOrder());
+			for(int i = 0; i<temp.length; i++) {
+				System.out.print(num_arr[i]);
+			}
+		}
+		else
+			System.out.print("-1");
+
+	
+	}
+
+}
