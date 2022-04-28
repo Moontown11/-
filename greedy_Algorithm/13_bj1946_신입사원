@@ -1,0 +1,64 @@
+package bj1946_신입사원;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Main {
+	public static void main(String args[]) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		
+		int[][] score;
+		int[] cnt = new int[T];
+		int idx = 0;
+		
+		for(int i = 0; i<T; i++) {
+			int N = Integer.parseInt(br.readLine());
+			score = new int[N][2];
+			for(int j = 0; j<N; j++) {
+				StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+				score[j][0] = Integer.parseInt(st.nextToken());
+				score[j][1] = Integer.parseInt(st.nextToken());
+			}
+			
+			cnt[idx] = 1;
+			
+			//배열 정렬
+			Arrays.sort(score, new Comparator<int[]>(){
+				public int compare(int[] o1, int[] o2) {
+					if(o1[0] == o2[0]) {
+						return o1[1] - o2[1];
+					}
+					else
+						return o1[0] - o2[0];
+				}
+				
+			});
+			int min = score[0][1];
+			for(int j = 1; j<N; j++) {
+				if(min>score[j][1]) {
+					cnt[idx]++;
+					min = score[j][1];
+				}
+			}
+			idx++;
+			}
+		
+		
+		for(int i =0; i<T; i++) {
+			System.out.println(cnt[i]);
+			}
+		}
+	}
+
+
+/* 
+1.입력받은 점수를 서류점수 기준으로 오름차순 정리
+2.면접점수만으로 비교하여 합격 여부 판단
+(ex. 서류1위는 무조건 합격, 2번부터 체크 min값을 최초 1위 면접점수로 해놓고
+min값보다 비교하는 서류순위가 높으면 합격임 & 다시 min값 비교해서 재설정
+*/
