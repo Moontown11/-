@@ -1,0 +1,37 @@
+package bj1715_카드정렬하기;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.PriorityQueue;
+
+
+public class Main {
+
+	public static void main(String args[]) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		long N = Long.parseLong(br.readLine());
+		
+		PriorityQueue<Long> card = new PriorityQueue<Long>();
+		for(int i = 0; i < N; i++) {
+			card.add(Long.parseLong(br.readLine()));
+		}
+		
+		long num = 0;
+		
+		while(card.size()>1) {
+			long temp1 = card.poll();
+			long temp2 = card.poll();
+			
+			num += temp1 + temp2;
+			card.add(temp1 + temp2);
+		}
+		
+		System.out.println(num);
+	}
+}
+
+
+/*priority queue사용.
+priority queue는 FIFO(First in First Out)구조로 일반적인 queue와 달리
+높은 순위의 Element를 우선적으로 꺼낸다.*/
