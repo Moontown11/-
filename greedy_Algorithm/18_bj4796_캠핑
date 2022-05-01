@@ -1,0 +1,49 @@
+package bj4796;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
+
+public class Main {
+	public static void main(String args[])throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		// P일 중, L일동안만 사용가능, V일의 휴가 L<P<V
+		int l,p,v,idx = 1, cnt = 0;
+		List<Integer> result = new ArrayList<Integer>();
+		StringTokenizer st;
+		
+		while(true) {
+		st = new StringTokenizer(br.readLine(), " ");
+		
+		l = Integer.parseInt(st.nextToken());
+		p = Integer.parseInt(st.nextToken());
+		v = Integer.parseInt(st.nextToken());
+		
+		if(l+p+v == 0)
+			break;
+		
+		cnt += (v/p) * l;
+		if(v%p >= l)
+			cnt += l;
+		else
+			cnt+= v%p;
+		
+		result.add(cnt);
+		cnt = 0;
+		idx = 1;
+		
+		}
+		
+		idx = 0;
+		Iterator<Integer> iter = result.iterator();
+		
+		while(iter.hasNext()) {
+			System.out.println("Case "+ (++idx) + ": " + iter.next());
+		}
+	}
+}
