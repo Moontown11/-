@@ -1,0 +1,25 @@
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class Main {
+	public static void main(String args[]) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String S = br.readLine();
+		
+		int one_cnt = 0, two_cnt = 0;
+		boolean one = false, two = false;
+		for(int i = 0; i < S.length(); i++) {
+			if(S.charAt(i) == '1' && !one) {
+				one = true; two = false;
+				one_cnt++;
+			}
+			else if(S.charAt(i) == '0' && !two) {
+				one = false; two = true;
+				two_cnt++;
+			}
+		}
+		
+		System.out.println(Math.min(one_cnt, two_cnt));
+	}
+}
