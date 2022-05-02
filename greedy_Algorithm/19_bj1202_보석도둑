@@ -1,0 +1,180 @@
+package bj1202_보석도둑;
+
+//import java.io.IOException;
+//import java.io.BufferedReader;
+//import java.io.InputStreamReader;
+//import java.util.StringTokenizer;
+//import java.util.Arrays;
+//
+////보석 총 N개, 각 보석의 무게 M, 가격 V. 
+////가방 K개, 각 가방 최대무게 C
+////최대가격
+//
+//public class Main {
+//	public static void main(String args[]) throws IOException{
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//		StringTokenizer st1;
+//		StringTokenizer st2;
+//		StringTokenizer st3;
+//		st1 = new StringTokenizer(br.readLine(), " ");
+//		
+//		int n = Integer.parseInt(st1.nextToken());
+//		int k = Integer.parseInt(st1.nextToken());
+//		
+//		jewelry[] jew = new jewelry[n];
+//		int[] bag = new int[k];
+//		
+//		for(int i = 0;i < n; i++) {
+//			st2 = new StringTokenizer(br.readLine(), " ");
+//			int w = Integer.parseInt(st2.nextToken());
+//			int p = Integer.parseInt(st2.nextToken());
+//			jew[i] = new jewelry();
+//			jew[i].setPW(w, p);
+//		}
+//		
+//		
+//		
+//		for(int i = 0; i<k; i++) {
+//			bag[i] = Integer.parseInt(br.readLine());
+//		}
+//		
+//		Arrays.sort(jew);//가격 순 정렬
+//		Arrays.sort(bag);//무게 순 정렬
+//		
+//		for(int i = 0; i < k; i++) {
+//			System.out.println(bag[i]);
+//		}
+//		
+//		int cnt = 0;
+//		for(int i = 0; i< n; i++) {
+//			for(int j = 0; j<k; j++) {
+//				if(bag[j] != -1 && bag[j] >= jew[i].getWeight()) {
+//					cnt+= jew[i].getPrice();
+//					bag[j] = -1;
+//					break;
+//				}
+//			}
+//		}//시간초과 난다
+//		
+//		
+//		
+//		System.out.println(cnt);
+//	}
+//
+//	
+//}
+//
+//
+//class jewelry implements Comparable{
+//	private int wgh = 0;
+//	private int price = 0;
+//	
+//	public jewelry() {
+//	}
+//	
+//	public void setPW(int wgh, int price) {
+//		this.wgh = wgh;
+//		this.price = price;
+//	}
+//
+//	public Integer getWeight() {
+//		return this.wgh;
+//	}
+//	
+//	public Integer getPrice() {
+//		return this.price;
+//	}
+//	
+//	@Override
+//	public int compareTo(Object o) {
+//		jewelry j = (jewelry) o;
+//		if(this.price < j.price) {
+//			return 1;
+//		} else if(this.price == j.price) {
+//			return 0;
+//		} else {
+//			return -1;
+//		}
+//	}
+//}
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+ 
+class Jewelry {
+    int mass; // 무게
+    int value; // 가격
+ 
+    Jewelry(int mass, int value) {
+        this.mass = mass;
+        this.value = value;
+    }
+}
+ 
+public class Main {
+ 
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+ 
+        Jewelry[] jewelries = new Jewelry[N];
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            int m = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+ 
+            jewelries[i] = new Jewelry(m, v);
+        }
+        // 무게를 오름차순 정렬하되, 무게가 같을 경우 가격을 내림차순 정렬.
+        Arrays.sort(jewelries, new Comparator<Jewelry>() {
+ 
+            @Override
+            public int compare(Jewelry o1, Jewelry o2) {
+                if (o1.mass == o2.mass) {
+                    return o2.value - o1.value;
+                }
+                return o1.mass - o2.mass;
+            }
+ 
+        });
+ 
+        int[] bags = new int[K];
+        for (int i = 0; i < K; i++) {
+            bags[i] = Integer.parseInt(br.readLine());
+        }
+        // 가방의 무게를 오름차순 정렬
+        Arrays.sort(bags);
+ 
+        // 우선순위 큐는 항상 가격이 내림차순 정렬되도록 설정.
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        long ans = 0;
+        for (int i = 0, j = 0; i < K; i++) {
+            // 현재 가방의 무게보다 작거나 같은 보석을 모두 우선순위 큐에 넣음.
+            while (j < N && jewelries[j].mass <= bags[i]) {
+                pq.offer(jewelries[j++].value);
+            }
+ 
+            // 우선순위 큐에 있는 요소를 하나 빼서 가방에 넣음.
+            // 이 때, 우선순위 큐는 내림차순 정렬이 되어있으므로
+            // 첫 번째 요소는 가장 큰 가격을 의미함.
+            if (!pq.isEmpty()) {
+                ans += pq.poll();
+            }
+        }
+ 
+        bw.write(ans + "\n");
+        bw.flush();
+        bw.close();
+        br.close();
+    }
+ 
+}
