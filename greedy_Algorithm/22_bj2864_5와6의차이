@@ -1,0 +1,31 @@
+package bj2864_5와6의차이;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+	public static void main(String args[]) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		String a = st.nextToken();
+		String b = st.nextToken();
+		
+		int max, min;
+		a = a.replaceAll("5", "6");
+		b = b.replaceAll("5", "6");
+		
+		String temp1 = a;
+		String temp2 = b;
+		max = Integer.parseInt(temp1) + Integer.parseInt(temp2);
+		
+		a = a.replaceAll("6", "5");
+		b = b.replaceAll("6", "5");
+		temp1 = a;
+		temp2 = b;
+		min = Integer.parseInt(temp1) + Integer.parseInt(temp2);
+		
+		System.out.println(min + " " + max);
+	}
+}
