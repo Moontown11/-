@@ -1,0 +1,91 @@
+package bj1080_행렬;
+
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+	static int n,m;
+	static int[][] arr;
+	static int[][] change;
+	static int result = 0;
+	
+	public static void main(String args[]) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());	
+	
+		arr = new int[n][m];
+		change = new int[n][m];
+		String temp;
+		for(int i = 0; i< n; i++) {
+			temp = br.readLine();
+			for(int j = 0; j<m; j++) {
+				arr[i][j] = Character.getNumericValue(temp.charAt(j));
+			}
+		}
+		
+		for(int i = 0; i<n; i++) {
+			temp = br.readLine();
+			for(int j = 0; j<m; j++) {
+				change[i][j] = Character.getNumericValue(temp.charAt(j));
+			}
+		}
+		
+		if(n < 3 || m < 3) {
+			if(IsSame(arr,change)) {
+				result = 0;
+			}
+			else
+				result = -1;
+		}
+		else {
+			Solution();
+		}
+		if(!IsSame(arr, change)) {
+			result = -1;
+		}
+		
+		System.out.println(result);
+		
+		
+	}
+	private static void Solution() {
+		// TODO Auto-generated method stub
+		// 3*3 만 바꿀 수 있으니, ( N-2, M-2 ) 까지밖에 못감
+		for( int i=0; i<n-2 ; i++) {
+			for ( int j=0; j<m-2 ;j ++) {
+				if ( arr[i][j] != change[i][j]) {
+					filp(i,j);
+					result ++;
+				}
+			}
+		}
+	}
+	
+	private static void filp(int cr, int cn) {
+		// TODO Auto-generated method stub
+		
+		for ( int i=cr; i< cr+3; i++) {
+			for ( int j=cn; j<cn+3; j++) {
+				arr[i][j] = arr[i][j] ^ 1 ; // 뒤집기
+			}
+		}
+		
+	}
+
+	private static boolean IsSame(int[][] matA2, int[][] matB2) {
+		// TODO Auto-generated method stub
+		for ( int i=0; i<n; i++) {
+			for ( int j=0; j<m;j ++){
+				if ( matA2[i][j] != matB2[i][j] ) return false; 
+			}
+		}
+		
+		return true;
+	}
+	
+}
