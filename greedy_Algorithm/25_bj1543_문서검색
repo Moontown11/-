@@ -1,0 +1,79 @@
+package bj1543;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+
+
+public class Main {
+	static int cnt = 0;
+	public static void main(String args[]) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String input = br.readLine();
+        String find = br.readLine();
+        int ans = 0;
+        for(int i = 0; i < input.length() - find.length() + 1; i++){
+            String temp = input.substring(i, i + find.length());
+            if(temp.equals(find)){
+                ans++;
+                i += find.length();
+                i--;
+            }
+        }
+        bw.write(ans + "\n");
+
+        bw.flush();
+        br.close();
+        bw.close();
+		
+	}
+	
+	
+	//KMP table생성
+	static int[] makeTable(String search) {
+		int n = search.length();
+		int[] table = new int[n];
+		
+		int idx = 0;
+		for(int i = 1; i<n; i++) {
+			while(idx > 0 && search.charAt(i) != search.charAt(idx))
+				idx = table[idx-1];
+			
+			if(search.charAt(i) == search.charAt(idx)) {
+				idx++;
+				table[i] = idx;
+			}
+		}
+		return table;
+	}
+	
+	static void KMP(String str, String search) {
+		int[] table = makeTable(search);
+		
+		int n1 = str.length();
+		int n2 = search.length();
+		
+		int idx = 0;
+		for(int i=0; i< n1; i++) {
+			// idx번 글자와 짚더미의 해당 글자가 불일치할 경우, 
+			// 현재 대응된 글자의 수를 table[idx-1]번으로 줄인다.
+			while(idx>0 && str.charAt(i) != search.charAt(idx)) {
+				idx = table[idx-1];
+			}
+			// 글자가 대응될 경우	
+			if(str.charAt(i) == search.charAt(idx)) {
+				if(idx == n2-1) {
+					cnt++;
+					idx =table[idx] + 1;
+				}else {
+					idx += 1;
+				}
+			}
+		}
+		
+	}
+}
